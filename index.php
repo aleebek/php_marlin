@@ -1,23 +1,40 @@
 <?php 
+$host = '127.0.0.1';
+$db   = 'my_database';
+$db_user = 'root';
+$db_pass = '';
+$charset = 'utf8';
 
-$users = [
-    [
-        "ID" => "1",
-        "username" => "John Doe",
-        "email" => "john@example.com",
-    ],
-    [
-        "ID" => "2",
-        "username" => "Joseph Doe",
-        "email" => "joseph@example.com",
-    ],
-    [
-        "ID" => "1",
-        "username" => "Jane Doe",
-        "email" => "jane@example.com",
-    ],
-
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$opt = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
 ];
+$pdo = new PDO($dsn, $db_user, $db_pass, $opt);
+
+$sql = 'SELECT * FROM users';
+$statement = $pdo->query($sql);
+$users = $statement->fetchall();
+var_dump($users);
+// $users = [
+//     [
+//         "ID" => "1",
+//         "username" => "John Doe",
+//         "email" => "john@example.com",
+//     ],
+//     [
+//         "ID" => "2",
+//         "username" => "Joseph Doe",
+//         "email" => "joseph@example.com",
+//     ],
+//     [
+//         "ID" => "1",
+//         "username" => "Jane Doe",
+//         "email" => "jane@example.com",
+//     ],
+
+// ];
 
 ?>
 <!DOCTYPE html>
@@ -48,8 +65,8 @@ $users = [
 					<tbody>
                         <?php foreach ($users as $user) { ?>
 						<tr>
-							<td><?php echo $user['ID'] ?></td>
-							<td><?php echo $user['username'] ?></td>
+							<td><?php echo $user['id'] ?></td>
+							<td><?php echo $user['name'] ?></td>
 							<td><?php echo $user['email'] ?></td>
 							<td>
 								<a href="edit.html" class="btn btn-warning">Edit</a>
