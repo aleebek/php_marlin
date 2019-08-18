@@ -21,9 +21,20 @@ if(empty($_REQUEST['password'])) {
     $_SESSION['error_password'] = 'Обязательное поле';
 } else {    
     $password = $_REQUEST['password'];
-    $hash = password_hash($password, PASSWORD_DEFAULT);
-    // var_dump($hash);
 }
+
+if(empty($_REQUEST['password_confirmation'])) {
+    $_SESSION['error_password_confirmation'] = 'Обязательное поле';
+} else {    
+    $password_confirmation = $_REQUEST['password_confirmation'];
+}
+
+if (strlen($password) < 6) {
+    $_SESSION['error_password'] = 'Длина пароля должна быть не менее 6 символов';
+} else if (strcmp ( $password , $password_confirmation ) !== 0) {
+    $_SESSION['error_password_confirmation'] = 'Пароль и его подтверждение не совпадают';
+} 
+
 
 if(empty($_REQUEST['email'])) {
     $_SESSION['error_email'] = 'Обязательное поле';
@@ -33,17 +44,17 @@ if(empty($_REQUEST['email'])) {
 } else {
     $_SESSION['error_email'] = "E-mail адрес должен содержать @.";   
     $_SESSION['email'] = $_REQUEST['email'];
-    header("Location: /php_marlin/register.php");
-    exit;
+    
 }
 
-if(empty($_REQUEST['email']) or empty($_REQUEST['name']) or empty($_REQUEST['password'])) {
+if(isset($_SESSION['error_email']) or isset($_SESSION['error_name']) or isset($_SESSION['error_password']) or isset($_SESSION['error_password_confirmation'])) {
     header("Location: /php_marlin/register.php");
     exit;
     
 } else {
     $date = date('Y-m-d');
-    $query='INSERT INTO users SET name="'.$name.'", password = "'.$hash.'", email="'.$email.'"';
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $query='INSERT INTO users SET name="'.$name.'", password = "'.$hash.'", registration_date = "'.$date.'", email="'.$email.'"';
     mysqli_query($link, $query) or die(mysqli_error($link));
     $_SESSION['success_comment'] = 'success';
     header("Location: /php_marlin/login.php");

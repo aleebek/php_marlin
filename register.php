@@ -4,6 +4,7 @@ session_start();
 if (isset($_SESSION['error_name'])) $error_name = $_SESSION['error_name'];
 if (isset($_SESSION['error_email'])) $error_email = $_SESSION['error_email'];
 if (isset($_SESSION['error_password'])) $error_password = $_SESSION['error_password'];
+if (isset($_SESSION['error_password_confirmation'])) $error_password_confirmation = $_SESSION['error_password_confirmation'];
 if (isset($_SESSION['email'])) $email = $_SESSION['email'];
 if (isset($_SESSION['success_comment'])) $success_comment = $_SESSION['success_comment'];
 session_destroy();
@@ -106,9 +107,9 @@ session_destroy();
                                         <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
 
                                         <div class="col-md-6">
-                                            <input id="password-confirm" type="password" class="form-control <?php if (isset($error_password)) echo 'is-invalid'; else echo 'valid'; ?>" name="password_confirmation"  autocomplete="new-password">
+                                            <input id="password-confirm" type="password" class="form-control <?php if (isset($error_password_confirmation)) echo 'is-invalid'; else echo 'valid'; ?>" name="password_confirmation"  autocomplete="new-password">
                                             <div class="invalid-feedback">
-                                                <?php if (isset($error_password)) echo $error_password;?>
+                                                <?php if (isset($error_password_confirmation)) echo $error_password_confirmation;?>
                                             </div>
                                         </div>
                                     </div>
