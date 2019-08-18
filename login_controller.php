@@ -11,7 +11,7 @@ $link = mysqli_connect($host, $db_user, $db_pass, $db_name);
 
 if(empty($_REQUEST['email'])) {
     $_SESSION['error_email'] = 'Обязательное поле';
-} else {
+} else if (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
     $email = $_REQUEST['email']; 
     $query = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($link, $query);
@@ -44,6 +44,12 @@ if(empty($_REQUEST['email'])) {
     }
     
     //var_dump($row);    
-} 
+} else {
+    $_SESSION['error_email'] = "E-mail адрес должен содержать @.";   
+    $_SESSION['email'] = $_REQUEST['email'];
+    header("Location: /php_marlin/login.php");
+    exit;
+    
+}
 
  
