@@ -8,9 +8,6 @@ $db_pass = '';
 
 $link = mysqli_connect($host, $db_user, $db_pass, $db_name);
 
-$name = $_REQUEST['name'];
-$email = $_REQUEST['email'];
-$password = $_REQUEST['password'];
 
 if(empty($_REQUEST['name'])) {
     $_SESSION['error_name'] = 'Обязательное поле';
@@ -23,13 +20,16 @@ if(empty($_REQUEST['name'])) {
 if(empty($_REQUEST['password'])) {
     $_SESSION['error_password'] = 'Обязательное поле';
 } else {    
-    $email = $_REQUEST['password'];
+    $password = $_REQUEST['password'];
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    // var_dump($hash);
 }
 
 if(empty($_REQUEST['email'])) {
     $_SESSION['error_email'] = 'Обязательное поле';
-} else if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+} else if (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
     $email = $_REQUEST['email'];
+    // var_dump($email);
 } else {
     $_SESSION['error_email'] = "E-mail адрес должен содержать @.";   
     $_SESSION['email'] = $_REQUEST['email'];
@@ -43,7 +43,7 @@ if(empty($_REQUEST['email']) or empty($_REQUEST['name']) or empty($_REQUEST['pas
     
 } else {
     $date = date('Y-m-d');
-    $query='INSERT INTO users SET name="'.$name.'", password = "'.$password.'", email="'.$email.'"';
+    $query='INSERT INTO users SET name="'.$name.'", password = "'.$hash.'", email="'.$email.'"';
     mysqli_query($link, $query) or die(mysqli_error($link));
     $_SESSION['success_comment'] = 'success';
     header("Location: /php_marlin/login.php");
