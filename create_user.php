@@ -16,7 +16,7 @@ $query='INSERT INTO users SET name="'.$name.'", password = "'.$password.'", emai
 mysqli_query($link, $query) or die(mysqli_error($link));
 
 
-header("Location: /php_marlin/register.php");
+header("Location: /php_marlin/login.php");
 exit;
 
 // if(empty($_REQUEST['name'])) {
