@@ -1,4 +1,10 @@
 <?php 
+session_start();
+
+if (isset($_SESSION['error_name'])) $error_name = $_SESSION['error_name'];
+if (isset($_SESSION['error_text'])) $error_text = $_SESSION['error_text'];
+session_destroy();
+
 $host = '127.0.0.1';
 $db_name   = 'my_database';
 $db_user = 'root';
@@ -13,7 +19,10 @@ $query = 'SELECT * FROM comments';
 $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
 for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
+
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +68,7 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
                 </div>
             </div>
         </nav>
-
+		
         <main class="py-4">
             <div class="container">
                 <div class="row justify-content-center">
@@ -93,11 +102,17 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
                                 <form action="/php_marlin/store.php" method="post">
                                     <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Имя</label>
-                                    <input name="name" class="form-control" id="exampleFormControlTextarea1" />
+									<input name="name" class="form-control <?php if (isset($error_name)) echo 'is-invalid'; else echo 'valid'; ?>" id="exampleFormControlTextarea1" />
+									<div class="invalid-feedback">
+										<?php if (isset($error_name)) echo $error_name;?>
+									</div>
                                   </div>
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Сообщение</label>
-                                    <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+									<textarea name="text" class="form-control <?php if (isset($error_text)) echo 'is-invalid'; else echo 'valid';?>" id="exampleFormControlTextarea1" rows="3"></textarea>
+									<div class="invalid-feedback">
+										<?php if (isset($error_text)) echo $error_text;?>
+									</div>
                                   </div>
                                   <button type="submit" class="btn btn-success">Отправить</button>
                                 </form>
