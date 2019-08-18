@@ -3,6 +3,7 @@ session_start();
 
 if (isset($_SESSION['error_name'])) $error_name = $_SESSION['error_name'];
 if (isset($_SESSION['error_text'])) $error_text = $_SESSION['error_text'];
+if (isset($_SESSION['success_comment'])) $success_comment = $_SESSION['success_comment'];
 session_destroy();
 
 $host = '127.0.0.1';
@@ -77,7 +78,7 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
                             <div class="card-header"><h3>Комментарии</h3></div>
 
                             <div class="card-body">
-								<div class="alert alert-success" role="alert">
+								<div class="alert alert-success <?php if (!isset($success_comment)) echo 'd-none';?>" role="alert">
 								Комментарий успешно добавлен
 								</div>
 								<?php foreach ($comments as $comment) { ?>

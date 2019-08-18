@@ -30,6 +30,7 @@ if(empty($_REQUEST['text']) or empty($_REQUEST['name'])) {
     $date = date('Y-m-d');
     $query='INSERT INTO comments SET name="'.$name.'", date = "'.$date.'", text="'.$text.'"';
     mysqli_query($link, $query);
+    $_SESSION['success_comment'] = 'success';
     header("Location: /php_marlin");
     exit;
 }
