@@ -52,7 +52,7 @@
                             <div class="card-header">Login</div>
 
                             <div class="card-body">
-                                <form method="POST" action="">
+                                <form method="POST" action="login_controller.php">
 
                                     <div class="form-group row">
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
