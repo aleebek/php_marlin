@@ -14,7 +14,7 @@ $link = mysqli_connect($host, $db_user, $db_pass, $db_name);
 
 mysqli_query($link, "SET NAMES 'utf8'");
 
-$query = 'SELECT * FROM comments';
+$query = 'SELECT * FROM comments ORDER BY id DESC';
 
 $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
