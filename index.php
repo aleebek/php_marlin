@@ -5,11 +5,15 @@ if (isset($_SESSION['error_name'])) {$error_name = $_SESSION['error_name']; unse
 if (isset($_SESSION['error_text'])) {$error_text = $_SESSION['error_text']; unset($_SESSION['error_text']);} 
 if (isset($_SESSION['success_comment'])) {$success_comment = $_SESSION['success_comment']; unset($_SESSION['success_comment']);}
 if (isset($_SESSION['current_user'])) $current_user = $_SESSION['current_user']; 
-else if (isset($_COOKIE['email'])) $current_user = $_COOKIE['email'];
-else {
+else if (isset($_COOKIE['email'])) {
+	$current_user = $_COOKIE['email'];
+	$_SESSION['current_user_id'] = $_COOKIE['id'];
+	$_SESSION['current_user'] = $current_user;
+} else {
+	$current_user = null;
 	session_destroy();
-	header("Location: /php_marlin/login.php");
-    exit;
+	// header("Location: /php_marlin/login.php");
+    // exit;
 }
 //  как очистить сессию и не удалить данные о зашедшем пользователе?
 //  if (isset($_SESSION['current_user'])) echo 'session '.$_SESSION['current_user']; 
@@ -25,11 +29,15 @@ $link = mysqli_connect($host, $db_user, $db_pass, $db_name);
 
 mysqli_query($link, "SET NAMES 'utf8'");
 
-$query = 'SELECT * FROM comments ORDER BY id DESC';
+$query = 'SELECT *, users.name as user_name FROM comments LEFT JOIN users ON users.id=comments.user_id ORDER BY comments.id DESC';
 
 $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
 for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
+
+//var_dump($_COOKIE);
+//var_dump($_SESSION);
+
 
 
 ?>
@@ -69,13 +77,13 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
 						<!-- Authentication Links -->
-							<li class="nav-item">
+							<li class="nav-item <?php if (empty($current_user)) echo 'd-none'?>">
                                 <a class="nav-link" href="logout.php">Logout</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
                                 <a class="nav-link" href="login.html">Login</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
                                 <a class="nav-link" href="register.php">Register</a>
                             </li>
                     </ul>
@@ -85,7 +93,20 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
 		
         <main class="py-4">
             <div class="container">
-                <div class="row justify-content-center">
+				<div class="row justify-content-center <?php if (!empty($current_user)) echo 'd-none'?>">
+					<div class="col-md-4">
+						<div class="card">
+							<div class="card-header text-center">
+								<h3>У вас нет доступа</h3>
+							</div>
+							<div class="card-body text-center">
+								<a href="login.php" class="btn btn-primary btn-lg">Login</a>
+								<a href="register.php" class="btn btn-primary btn-lg">Register</a>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="row justify-content-center <?php if (empty($current_user)) echo 'd-none'?>">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header"><h3>Комментарии</h3></div>
@@ -98,7 +119,7 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
 								<div class="media">
 									<img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
 									<div class="media-body">
-									<h5 class="mt-0"><?php echo $comment['name'] ?></h5> 
+									<h5 class="mt-0"><?php echo $comment['user_name'] ?></h5> 
 									<span><small><?php echo date('d/m/Y' , strtotime($comment['date']))  ?></small></span>
 									<p><?php echo $comment['text'] ?></p>
 									</div>
@@ -114,21 +135,15 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
 
                             <div class="card-body">
                                 <form action="/php_marlin/store.php" method="post">
-                                    <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Имя</label>
-									<input name="name" class="form-control <?php if (isset($error_name)) echo 'is-invalid'; else echo 'valid'; ?>" id="exampleFormControlTextarea1" />
-									<div class="invalid-feedback">
-										<?php if (isset($error_name)) echo $error_name;?>
+                                	
+									<div class="form-group">
+										<label for="exampleFormControlTextarea1">Сообщение</label>
+										<textarea name="text" class="form-control <?php if (isset($error_text)) echo 'is-invalid'; else echo 'valid';?>" id="exampleFormControlTextarea1" rows="3"></textarea>
+										<div class="invalid-feedback">
+											<?php if (isset($error_text)) echo $error_text;?>
+										</div>
 									</div>
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Сообщение</label>
-									<textarea name="text" class="form-control <?php if (isset($error_text)) echo 'is-invalid'; else echo 'valid';?>" id="exampleFormControlTextarea1" rows="3"></textarea>
-									<div class="invalid-feedback">
-										<?php if (isset($error_text)) echo $error_text;?>
-									</div>
-                                  </div>
-                                  <button type="submit" class="btn btn-success">Отправить</button>
+                                  	<button type="submit" class="btn btn-success">Отправить</button>
                                 </form>
                             </div>
                         </div>

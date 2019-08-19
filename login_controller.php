@@ -27,8 +27,10 @@ if(empty($_REQUEST['email'])) {
                 if(isset($_REQUEST['remember'])) {
                     setcookie('hash', $hash);
                     setcookie('email', $row['email']);
+                    setcookie('id', $row['id']);
                 }
                 $_SESSION['current_user'] = $row['email'];
+                $_SESSION['current_user_id'] = $row['id'];
                 header("Location: /php_marlin");
                 exit;
             }

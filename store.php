@@ -10,11 +10,9 @@ $link = mysqli_connect($host, $db_user, $db_pass, $db_name);
 
 
 
-if(empty($_REQUEST['name'])) {
-    $_SESSION['error_name'] = 'Обязательное поле';
-} else {    
-    $name = $_REQUEST['name'];
-}
+  
+$id = $_SESSION['current_user_id'];
+
 
 if(empty($_REQUEST['text'])) {
     $_SESSION['error_text'] = 'Обязательное поле';
@@ -28,7 +26,7 @@ if(empty($_REQUEST['text']) or empty($_REQUEST['name'])) {
     
 } else {
     $date = date('Y-m-d');
-    $query='INSERT INTO comments SET name="'.$name.'", date = "'.$date.'", text="'.$text.'"';
+    $query='INSERT INTO comments SET id="'.$id.'", date = "'.$date.'", text="'.$text.'"';
     mysqli_query($link, $query);
     $_SESSION['success_comment'] = 'success';
     header("Location: /php_marlin");
