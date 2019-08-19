@@ -8,7 +8,6 @@ $db_pass = '';
 
 $link = mysqli_connect($host, $db_user, $db_pass, $db_name);
 
-
 if(empty($_REQUEST['email'])) {
     $_SESSION['error_email'] = 'Обязательное поле';
 } else if (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
@@ -25,6 +24,10 @@ if(empty($_REQUEST['email'])) {
             //var_dump($hash); 
             if (password_verify($password, $hash)) {
                 //echo 'Success!';
+                if(isset($_REQUEST['remember'])) {
+                    setcookie('hash', $hash);
+                    setcookie('email', $row['email']);
+                }
                 $_SESSION['current_user'] = $row['email'];
                 header("Location: /php_marlin");
                 exit;

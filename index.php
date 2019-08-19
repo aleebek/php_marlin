@@ -1,14 +1,20 @@
 <?php 
 session_start();
 
-if (isset($_SESSION['error_name'])) $error_name = $_SESSION['error_name'];
-if (isset($_SESSION['error_text'])) $error_text = $_SESSION['error_text'];
-if (isset($_SESSION['success_comment'])) $success_comment = $_SESSION['success_comment'];
-if (isset($_SESSION['current_user'])) $current_user = $_SESSION['current_user']; else $current_user = 'guest';
-session_destroy(); //как очистить сессию и не удалить данные о зашедшем пользователе?
+if (isset($_SESSION['error_name'])) {$error_name = $_SESSION['error_name']; unset($_SESSION['error_name']);}
+if (isset($_SESSION['error_text'])) {$error_text = $_SESSION['error_text']; unset($_SESSION['error_text']);} 
+if (isset($_SESSION['success_comment'])) {$success_comment = $_SESSION['success_comment']; unset($_SESSION['success_comment']);}
+if (isset($_SESSION['current_user'])) $current_user = $_SESSION['current_user']; 
+else if (isset($_COOKIE['email'])) $current_user = $_COOKIE['email'];
+else {
+	session_destroy();
+	header("Location: /php_marlin/login.php");
+    exit;
+}
+ //как очистить сессию и не удалить данные о зашедшем пользователе?
 
-$_SESSION['current_user'] = $current_user;
-echo $current_user;
+
+
 
 $host = '127.0.0.1';
 $db_name   = 'my_database';
