@@ -11,9 +11,9 @@ else {
 	header("Location: /php_marlin/login.php");
     exit;
 }
- //как очистить сессию и не удалить данные о зашедшем пользователе?
-
-
+//  как очистить сессию и не удалить данные о зашедшем пользователе?
+//  if (isset($_SESSION['current_user'])) echo 'session '.$_SESSION['current_user']; 
+//  if (isset($_COOKIE['email'])) echo 'cookie '.$_COOKIE['email'];
 
 
 $host = '127.0.0.1';
@@ -68,7 +68,10 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
+						<!-- Authentication Links -->
+							<li class="nav-item">
+                                <a class="nav-link" href="logout.php">Logout</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="login.html">Login</a>
                             </li>
