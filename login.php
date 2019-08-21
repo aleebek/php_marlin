@@ -1,3 +1,14 @@
+<?php 
+session_start();
+
+if (isset($_SESSION['error_name'])) $error_name = $_SESSION['error_name'];
+if (isset($_SESSION['error_email'])) $error_email = $_SESSION['error_email'];
+if (isset($_SESSION['error_password'])) $error_password = $_SESSION['error_password'];
+if (isset($_SESSION['error_password_confirmation'])) $error_password_confirmation = $_SESSION['error_password_confirmation'];
+if (isset($_SESSION['email'])) $email = $_SESSION['email'];
+if (isset($_SESSION['success_comment'])) $success_comment = $_SESSION['success_comment'];
+session_destroy();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,16 +63,20 @@
                             <div class="card-header">Login</div>
 
                             <div class="card-body">
+                                <div class="alert alert-success <?php if (!isset($success_comment)) echo 'd-none';?>" role="alert">
+                                    Профиль успешно создан
+                                </div>
                                 <form method="POST" action="login_controller.php">
 
                                     <div class="form-group row">
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control is-invalid " name="email"  autocomplete="email" autofocus >
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>Ошибка валидации</strong>
-                                                </span>
+                                            <input id="email" type="text" class="form-control <?php if (isset($error_email)) echo 'is-invalid'; else echo 'valid'; ?>" name="email" value = "<?php if (isset($email)) echo $email ?>">
+                                            <!-- type="email" -->
+                                            <div class="invalid-feedback">
+                                                <?php if (isset($error_email)) echo $error_email;?>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -69,7 +84,10 @@
                                         <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                                         <div class="col-md-6">
-                                            <input id="password" type="password" class="form-control" name="password"  autocomplete="current-password">
+                                            <input id="password" type="password" class="form-control <?php if (isset($error_password)) echo 'is-invalid'; else echo 'valid'; ?>" name="password"  autocomplete="new-password">
+                                            <div class="invalid-feedback">
+                                                <?php if (isset($error_password)) echo $error_password;?>
+                                            </div>
                                         </div>
                                     </div>
 

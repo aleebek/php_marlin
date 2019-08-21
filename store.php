@@ -20,14 +20,15 @@ if(empty($_REQUEST['text'])) {
     $text = $_REQUEST['text'];
 }
 
-if(empty($_REQUEST['text']) or empty($_REQUEST['name'])) {
+if(empty($_REQUEST['text'])) {
     header("Location: /php_marlin");
     exit;
     
 } else {
     $date = date('Y-m-d');
-    $query='INSERT INTO comments SET id="'.$id.'", date = "'.$date.'", text="'.$text.'"';
-    mysqli_query($link, $query);
+    $query='INSERT INTO comments SET user_id="'.$id.'", date = "'.$date.'", text="'.$text.'"';
+    echo $query;
+    mysqli_query($link, $query) or die(mysqli_error($link));
     $_SESSION['success_comment'] = 'success';
     header("Location: /php_marlin");
     exit;

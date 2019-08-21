@@ -35,8 +35,9 @@ $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
 for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
 
-//var_dump($_COOKIE);
-//var_dump($_SESSION);
+var_dump($_SESSION);
+var_dump($_COOKIE);
+
 
 
 
@@ -77,15 +78,18 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
 						<!-- Authentication Links -->
-							<li class="nav-item <?php if (empty($current_user)) echo 'd-none'?>">
-                                <a class="nav-link" href="logout.php">Logout</a>
-                            </li>
-                            <li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
-                                <a class="nav-link" href="login.html">Login</a>
-                            </li>
-                            <li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
-                                <a class="nav-link" href="register.php">Register</a>
-                            </li>
+						<li class="nav-item <?php if (empty($current_user)) echo 'd-none'?>">
+							<a class="nav-link" href="profile.php">Profile</a>
+						</li>
+						<li class="nav-item <?php if (empty($current_user)) echo 'd-none'?>">
+							<a class="nav-link" href="logout.php">Logout</a>
+						</li>
+						<li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
+							<a class="nav-link" href="login.html">Login</a>
+						</li>
+						<li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
+							<a class="nav-link" href="register.php">Register</a>
+						</li>
                     </ul>
                 </div>
             </div>
@@ -106,7 +110,8 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
 						</div>
 					</div>
 				</div>
-                <div class="row justify-content-center <?php if (empty($current_user)) echo 'd-none'?>">
+				<?php if (!empty($current_user)) :?>
+                <div class="row justify-content-center">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header"><h3>Комментарии</h3></div>
@@ -149,6 +154,7 @@ for ($comments = []; $row = mysqli_fetch_assoc($result); $comments[] = $row);
                         </div>
                     </div>
                 </div>
+				<?php endif;?>
             </div>
         </main>
     </div>
