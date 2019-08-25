@@ -17,10 +17,9 @@ function return_to_login(){
 function check_empty_field($field) {
     if(empty($_REQUEST[$field])) {
         $_SESSION['error_'.$field] = 'Обязательное поле';
-        return_to_login();
-    } else {
         $_SESSION[$field] = $_REQUEST[$field];
-    }
+        return_to_login();
+    } 
 }
 
 function validate_email() {
@@ -62,6 +61,7 @@ if (password_verify($password, $hash)) {
     }
     $_SESSION['current_user'] = $row['email'];
     $_SESSION['current_user_id'] = $row['id'];
+    $_SESSION['hash'] = $hash;
     header("Location: /php_marlin");
     exit;
 }

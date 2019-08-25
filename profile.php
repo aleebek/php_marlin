@@ -3,8 +3,11 @@ session_start();
 var_dump($_SESSION);
 if (isset($_SESSION['error_name'])) {$error_name = $_SESSION['error_name']; unset($_SESSION['error_name']);}
 if (isset($_SESSION['error_email'])) {$error_email = $_SESSION['error_email']; unset($_SESSION['error_email']);} 
+if (isset($_SESSION['error_current'])) {$error_current = $_SESSION['error_current']; unset($_SESSION['error_current']);} 
 if (isset($_SESSION['error_password'])) {$error_password = $_SESSION['error_password']; unset($_SESSION['error_password']);} 
+if (isset($_SESSION['error_password_confirmation'])) {$error_password_confirmation = $_SESSION['error_password_confirmation']; unset($_SESSION['error_password_confirmation']);} 
 if (isset($_SESSION['success_update'])) {$success_update = $_SESSION['success_update']; unset($_SESSION['success_update']);}
+if (isset($_SESSION['success_password'])) {$success_password = $_SESSION['success_password']; unset($_SESSION['success_password']);}
 if (isset($_SESSION['current_user'])) {
     $current_user = $_SESSION['current_user']; 
     $id = $_SESSION['current_user_id'];
@@ -146,8 +149,8 @@ var_dump($row);
                         <div class="card-header"><h3>Безопасность</h3></div>
 
                         <div class="card-body">
-                            <div class="alert alert-success" role="alert">
-                                Пароль успешно обновлен
+                            <div class="alert alert-success <?php if (!isset($success_password)) echo 'd-none';?>" role="alert">
+							    Пароль успешно обновлен
                             </div>
 
                             <form action="password_update.php" method="post">
@@ -155,17 +158,27 @@ var_dump($row);
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Current password</label>
-                                            <input type="password" name="current" class="form-control" id="exampleFormControlInput1">
+                                            <input type="password" class="form-control <?php if (isset($error_current)) echo 'is-invalid'; else echo 'valid'; ?>" name="current">
+                                            <div class="invalid-feedback">
+                                                <?php if (isset($error_current)) echo $error_current;?>
+                                            </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">New password</label>
-                                            <input type="password" name="password" class="form-control" id="exampleFormControlInput1">
+                                            <input type="password" class="form-control <?php if (isset($error_password)) echo 'is-invalid'; else echo 'valid'; ?>" name="password">
+                                            <div class="invalid-feedback">
+                                                <?php if (isset($error_password)) echo $error_password;?>
+                                            </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Password confirmation</label>
-                                            <input type="password" name="password_confirmation" class="form-control" id="exampleFormControlInput1">
+                                            
+                                            <input type="password" class="form-control <?php if (isset($error_password_confirmation)) echo 'is-invalid'; else echo 'valid'; ?>" name="password_confirmation">
+                                            <div class="invalid-feedback">
+                                                <?php if (isset($error_password_confirmation)) echo $error_password_confirmation;?>
+                                            </div>
                                         </div>
 
                                         <button class="btn btn-success">Submit</button>

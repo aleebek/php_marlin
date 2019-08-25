@@ -85,7 +85,7 @@ var_dump($_COOKIE);
 							<a class="nav-link" href="logout.php">Logout</a>
 						</li>
 						<li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
-							<a class="nav-link" href="login.html">Login</a>
+							<a class="nav-link" href="login.php">Login</a>
 						</li>
 						<li class="nav-item <?php if (!empty($current_user)) echo 'd-none'?>">
 							<a class="nav-link" href="register.php">Register</a>

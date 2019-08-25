@@ -61,8 +61,7 @@ if (empty($_FILES['image']['tmp_name'])) {
 
 var_dump($query);
 
-$file_name = 'img/'.uniqid().'.jpg';
 
 mysqli_query($link, $query) or die(mysqli_error($link));
-
+$_SESSION['success_update'] = 'ok';
 return_to_profile();
